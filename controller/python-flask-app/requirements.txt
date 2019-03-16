@@ -1,3 +1,4 @@
 flask==1.0.2
 pandas
 numpy
+flask-cors

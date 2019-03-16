@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify
 import json
+from flask_cors import CORS
 
 one_rep_max_lookup = {
     1: 1,
@@ -119,7 +120,7 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
      )
 
 app = Flask(__name__)
-
+CORS(app)
 @app.route("/one-rep-max-estimates", methods=['POST'])
 def hello():
     exercise = request.form.get('exercise')
