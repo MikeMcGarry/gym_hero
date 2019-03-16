@@ -2,6 +2,11 @@ version: "3"
 
 services:
   view:
+    build: ./view
+    ports:
+      - "3000:3000"
 
   controller:
-    
+    build: ./controller
+    ports:
+      - "5000:5000"
