@@ -105,18 +105,25 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
 
     _exercise = _exercise.groupby(
         ['Exercise', 'Date']).agg(
-            {key: 'max', 'Date': 'first'})
+            {key: 'max', 'Date': 'first', 'Workout #': 'first'})
 
     max_one_rep_max = _exercise[key].max()
     min_date = _exercise['Date'].min()
     max_date = _exercise['Date'].max()
+
+    dates = list(_exercise['Date'].values)
+    one_rep_max_estimates = list(_exercise[key].values)
+    workouts = list(_exercise['Workout #'].values)
+    chart = [{'workout': str(workout), 'one_rep_max_estimate': str(weight)} for workout, weight in zip(dates, one_rep_max_estimates)]
 
     return (
         {'max_one_rep_max': max_one_rep_max,
          'min_date': min_date,
          'max_date': max_date,
          'dates': list(_exercise['Date'].values),
-         'one_rep_max_estimates': list(_exercise[key].values)}
+         'one_rep_max_estimates': list(_exercise[key].values),
+         'chart': chart,
+         }
      )
 
 app = Flask(__name__)

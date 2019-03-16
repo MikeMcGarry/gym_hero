@@ -8,7 +8,7 @@ import * as serviceWorker from './serviceWorker';
 ReactDOM.render(<App />, document.getElementById('root'));
 ReactDOM.render(
     <Form1/>,
-    document.getElementById('root')
+    document.getElementById('default')
 );
 
 
