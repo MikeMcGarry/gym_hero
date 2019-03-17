@@ -3,6 +3,8 @@ import pandas as pd
 from flask import Flask, request, jsonify
 import json
 from flask_cors import CORS
+import time
+import datetime
 
 one_rep_max_lookup = {
     1: 1,
@@ -108,10 +110,10 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
             {key: 'max', 'Date': 'first', 'Workout #': 'first'})
 
     max_one_rep_max = _exercise[key].max()
-    min_date = _exercise['Date'].min()
-    max_date = _exercise['Date'].max()
 
-    dates = list(_exercise['Date'].values)
+    dates = list(_exercise['Date'].apply(lambda x: str(int(time.mktime(x.timetuple())))).values)
+    min_date = str(min(dates))
+    max_date = str(max(dates))
     one_rep_max_estimates = list(_exercise[key].values)
     workouts = list(_exercise['Workout #'].values)
     chart = [{'workout': str(date), 'one_rep_max_estimate': str(round(weight,2))} for date, weight in zip(dates, one_rep_max_estimates)]
@@ -120,15 +122,41 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
         {'max_one_rep_max': max_one_rep_max,
          'min_date': min_date,
          'max_date': max_date,
-         'dates': list(_exercise['Date'].values),
+         'dates': dates,
          'one_rep_max_estimates': list(_exercise[key].values),
          'chart': chart,
          }
      )
 
+def volume(workout_type):
+    gym_hero_merged_weighted = gym_hero_merged.loc[gym_hero_merged['Unit'] == 'kg']
+    gym_hero_merged_weighted = gym_hero_merged.loc[gym_hero_merged['Workout'] == workout_type]
+    gym_hero_merged_weighted_copy = gym_hero_merged_weighted.copy(deep=True)
+    gym_hero_merged_weighted['volume'] = gym_hero_merged_weighted_copy.loc[:, 'Reps'].multiply(
+        gym_hero_merged_weighted_copy.loc[:, 'Weight'], axis=0)
+    gym_hero_merged_weighted_sum = gym_hero_merged_weighted.groupby('Workout #').agg({
+        'Workout': 'first',
+        'volume': 'sum',
+        'Date':'first',
+        'Workout duration':'first'})
+
+    dates = list(gym_hero_merged_weighted_sum['Date'].values)
+    volume = list(gym_hero_merged_weighted_sum['volume'].values)
+    chart = [{'workout': str(date), 'volume': str(round(volume,2))} for date, volume in zip(dates, volume)]
+    return (
+        {'chart': chart}
+    )
+
+
 app = Flask(__name__)
 CORS(app)
+
 @app.route("/one-rep-max-estimates", methods=['POST'])
-def hello():
+def POST_one_rep_max_estimates():
     exercise = request.form.get('exercise')
     return (jsonify(timeline_max(exercise, one_rep=True)), 200)
+
+@app.route("/volume", methods=['POST'])
+def GET_volume():
+    workout_type = request.form.get('workout_type')
+    return (jsonify(volume(workout_type)), 200)
