@@ -1,24 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios'
 import querystring from 'querystring';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine
 } from 'recharts';
 
 axios.defaults.baseURL = 'http://0.0.0.0:5000';
 
-class Form1 extends Component{
+class Charts extends Component {
+    render() {
+        return (
+            <div className={'Charts'}>
+            <Chart exercise="DB Shoulder Press" />
+            <Chart exercise="Goblet Squat" />
+            <Chart exercise="Deadlifts" />
+            <Chart exercise="BB Row" />
+            </div>
+        );
+    };
+};
 
-  state = {
-    dates: [],
-    max_date: '',
-    max_one_rep_max: '',
-    min_date: '',
-    one_rep_max_estimates: [],
-    chart: [],
-    workouts: []
+class Chart extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      dates: [],
+      max_date: '',
+      max_one_rep_max: '',
+      min_date: '',
+      one_rep_max_estimates: [],
+      chart: [],
+      workouts: [],
+      exercise: this.props.exercise
+    };
+
   };
 
   componentDidMount() {
@@ -27,7 +43,7 @@ class Form1 extends Component{
 
   async fetchValues() {
     const values = await axios.post('/one-rep-max-estimates', querystring.stringify({
-      exercise: 'DB Shoulder Press'
+      exercise: this.state.exercise
     }));
     this.setState({
       dates: values.data.dates,
@@ -36,13 +52,16 @@ class Form1 extends Component{
       min_date: values.data.min_date,
       one_rep_max_estimates: values.data.one_rep_max_estimates,
       chart: values.data.chart});
+    return values;
   }
 
   render() {
     return (
+      <div className={'Exercises'}>
+      <h1 align="center">{this.state.exercise}</h1>
       <LineChart
-        width={500}
-        height={300}
+        width={1000}
+        height={500}
         data={this.state.chart}
         margin={{
           top: 5, right: 30, left: 20, bottom: 5,
@@ -53,9 +72,10 @@ class Form1 extends Component{
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-        <Line type="monotone" dataKey="one_rep_max_estimate" stroke="#82ca9d" />
+        <ReferenceLine y={this.state.max_one_rep_max} stroke="red" strokeDasharray="3 3" />
+        <Line type="monotone" dataKey="one_rep_max_estimate" stroke="#00d8ff" />
       </LineChart>
+      </div>
     );
   };
 };
@@ -73,4 +93,4 @@ class Form1 extends Component{
 
 */
 
-export default Form1;
+export default Charts;
