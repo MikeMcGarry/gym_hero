@@ -140,11 +140,20 @@ def volume(workout_type):
         'Date':'first',
         'Workout duration':'first'})
 
-    dates = list(gym_hero_merged_weighted_sum['Date'].values)
+    dates = list(gym_hero_merged_weighted_sum['Date'].apply(lambda x: str(int(time.mktime(x.timetuple())))).values)
     volume = list(gym_hero_merged_weighted_sum['volume'].values)
+    min_date = str(min(dates))
+    max_date = str(max(dates))
+    max_volume = gym_hero_merged_weighted_sum['volume'].max()
     chart = [{'workout': str(date), 'volume': str(round(volume,2))} for date, volume in zip(dates, volume)]
     return (
-        {'chart': chart}
+        {'max_volume': max_volume,
+         'min_date': min_date,
+         'max_date': max_date,
+         'dates': dates,
+         'volume': volume,
+         'chart': chart,
+         }
     )
 
 
