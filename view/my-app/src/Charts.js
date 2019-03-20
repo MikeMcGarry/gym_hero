@@ -64,8 +64,9 @@ class Charts extends Component {
             <Chart exercise="Bench Press" />
             <Chart exercise="Machine Fly" />
             <h1 className='BodyType'> Back</h1>
+            <Chart exercise="T-Bar Rows" />
             <Chart exercise="BB Row" />
-            <Chart exercise="Wide Grip Lat Pulldown" />
+            <Chart exercise="Wide Grip Lat Pulldown (Machine Kings Cross London)" />
             <Chart exercise="Bent Over DB Row" />
             <Chart exercise="BB Row (Underhand)" />
             <h1 className='BodyType'>Arms</h1>
