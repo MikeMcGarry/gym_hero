@@ -16,9 +16,6 @@ import {
 } from 'recharts';
 import moment from 'moment';
 
-// Set the base URL for axios
-axios.defaults.baseURL = 'http://0.0.0.0:5000';
-
 // Function to convert UNIX timestamp to a readable date format
 var ConvertUNIX = (unix) => {
   return moment.unix(Number(unix)).format('DD-MM-YYYY');
@@ -106,7 +103,7 @@ class Chart extends Component{
   // This calls the API to get the exercise details
   async fetchValues() {
     // Async request to get the exercise details
-    const values = await axios.post('/one-rep-max-estimates', querystring.stringify({
+    const values = await axios.post('/api/one-rep-max-estimates', querystring.stringify({
       exercise: this.state.exercise
     }));
     // Set the state from the results from the API

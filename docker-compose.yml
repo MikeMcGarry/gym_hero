@@ -10,3 +10,9 @@ services:
     build: ./controller
     ports:
       - "5000:5000"
+
+  server:
+    restart: always
+    build: ./server
+    ports:
+      - "80:80"

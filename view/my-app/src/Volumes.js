@@ -16,8 +16,6 @@ import {
 } from 'recharts';
 import moment from 'moment';
 
-axios.defaults.baseURL = 'http://0.0.0.0:5000';
-
 // Function to convert UNIX timestamp to a readable date format
 var ConvertUNIX = (unix) => {
   return moment.unix(Number(unix)).format('DD-MM-YYYY');
@@ -75,7 +73,7 @@ class Volume extends Component{
   }
 
   async fetchValues() {
-    const values = await axios.post('/volume', querystring.stringify({
+    const values = await axios.post('/api/volume', querystring.stringify({
       workout_type: this.state.workout
     }));
     this.setState({
