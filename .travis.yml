@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t mikemcgarry/view-test -f ./view/Dockerfile.dev ./view
+
+script:
+  - docker run mikemcgarry/view-test npm test -- --coverage
+
+after_sucess:
+  - docker build -t mikemcgarry/gym-hero-view ./view
+  - docker build -t mikemcgarry/gym-hero-controller ./controller
+  - docker build -t mikemcgarry/gym-hero-server ./server
+
+  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push mikemcgarry/gym-hero-view
+  - docker push mikemcgarry/gym-hero-controller
+  - docker push mikemcgarry/gym-hero-server
