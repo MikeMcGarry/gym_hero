@@ -1,0 +1,29 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "view",
+      "image": "mikemcgarry/gym-hero-view",
+      "hostname": "view",
+      "essential": false
+    },
+    {
+      "name": "controller",
+      "image": "mikemcgarry/gym-hero-controller",
+      "hostname": "controller",
+      "essential": false
+    },
+    {
+      "name": "server",
+      "image": "mikemcgarry/gym-hero-server",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["view", "controller"]
+    }
+  ]
+}
