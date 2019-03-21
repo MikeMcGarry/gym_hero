@@ -6,14 +6,14 @@
       "image": "mikemcgarry/gym-hero-view",
       "hostname": "view",
       "essential": false,
-      "memory": 512
+      "memory": 128
     },
     {
       "name": "controller",
       "image": "mikemcgarry/gym-hero-controller",
       "hostname": "controller",
       "essential": false,
-      "memory": 512
+      "memory": 256
     },
     {
       "name": "server",
@@ -26,7 +26,7 @@
         }
       ],
       "links": ["view", "controller"],
-      "memory": 512
+      "memory": 128
     }
   ]
 }
