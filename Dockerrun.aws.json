@@ -5,13 +5,15 @@
       "name": "view",
       "image": "mikemcgarry/gym-hero-view",
       "hostname": "view",
-      "essential": false
+      "essential": false,
+      "memory": 512
     },
     {
       "name": "controller",
       "image": "mikemcgarry/gym-hero-controller",
       "hostname": "controller",
-      "essential": false
+      "essential": false,
+      "memory": 512
     },
     {
       "name": "server",
@@ -23,7 +25,8 @@
           "containerPort": 80
         }
       ],
-      "links": ["view", "controller"]
+      "links": ["view", "controller"],
+      "memory": 512
     }
   ]
 }
