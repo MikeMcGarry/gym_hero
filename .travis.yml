@@ -23,7 +23,7 @@ deploy:
   provider: elasticbeanstalk
   region: eu-west-2
   app: gym-hero
-  env: GymHero-env
+  env: GymHero-env-1
   bucket_name: elasticbeanstalk-eu-west-2-705284077756
   bucket_path: gym-hero
   on:
