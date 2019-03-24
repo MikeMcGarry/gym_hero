@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller-deployment
+spec:
+  # Number of pods to create and manage
+  replicas: 2
+  # Allows deployment to get handle on created pods
+  selector:
+    matchLabels:
+      component: api
+  # The pod configurationm same as in a Pod config file
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      containers:
+        - name: controller
+          image: mikemcgarry/gym-hero-controller
+          ports:
+            - containerPort: 5000

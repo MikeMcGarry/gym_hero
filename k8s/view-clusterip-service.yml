@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: view-clusterip-service
+spec:
+  # For development only
+  type: ClusterIP
+  ports:
+      # Port inside node you can access pod/s from
+    - port: 3000
+      # Target port of pod/s
+      targetPort: 3000
+  # The meta data label of the pods to connect to
+  selector:
+    component: web
