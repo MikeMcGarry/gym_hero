@@ -42,6 +42,7 @@ class Volumes extends Component {
     render() {
         return (
             <div className={'Charts'}>
+            <h1 className='BodyType'>Workout Volume</h1>
             <Volume workout="Chest" />
             <Volume workout="Legs/Abs" />
             <Volume workout="Back & Abs" />
