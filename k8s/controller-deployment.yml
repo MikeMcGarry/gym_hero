@@ -18,5 +18,16 @@ spec:
       containers:
         - name: controller
           image: mikemcgarry/gym-hero-controller
+          volumeMounts:
+            - name: workoutdata
+              mountpath: /data
           ports:
             - containerPort: 5000
+        - name: datasource
+          image: mikemcgarry/gym-hero-datasource
+          volumeMounts:
+            - name: workoutdata
+              mountpath: /data
+      volumes:
+        - name: workoutdata
+          emptyDir: {}
