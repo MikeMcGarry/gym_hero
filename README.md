@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/MikeMcGarry/gym_hero.svg?branch=master)](https://travis-ci.org/MikeMcGarry/gym_hero)
+
 # Gym Hero Progress Charts
 
 If you use the Gym Hero app (https://gymhero.me/) you can use this repo to chart your progress. 
