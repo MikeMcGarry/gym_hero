@@ -1,9 +1,9 @@
 import boto3
 import botocore
 
-Bucket = "Your S3 BucketName"
-Key = "Name of the file in S3 that you want to download"
-outPutName = "Output file name(The name you want to save after we download from s3)"
+Bucket = "gym-hero-data"
+Key = "gym-hero-export.csv"
+outPutName = "gym-hero-export.csv"
 
 s3 = boto3.resource('s3')
 
