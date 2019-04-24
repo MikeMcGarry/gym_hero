@@ -5,7 +5,7 @@ import time
 
 Bucket = "gym-hero-data"
 Key = "gym-hero-export.csv"
-outPutName = "gym-hero-export.csv"
+outPutName = "data/gym-hero-export.csv"
 
 # Pass in the access credentials via environment variables
 AWS_SERVER_PUBLIC_KEY = os.getenv("AWS_SERVER_PUBLIC_KEY", None)

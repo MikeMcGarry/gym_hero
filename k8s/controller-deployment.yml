@@ -17,14 +17,17 @@ spec:
     spec:
       containers:
         - name: controller
-          image: mikemcgarry/gym-hero-controller
+          image: mikemcgarry/gym-hero-controller:v0.13.0
           volumeMounts:
             - name: workoutdata
-              mountPath: /data
+              mountPath: /tmp/controller/python-flask-app/data
           ports:
             - containerPort: 5000
         - name: datasource
-          image: mikemcgarry/gym-hero-datasource
+          image: mikemcgarry/gym-hero-datasource:v0.14.0
+          volumeMounts:
+            - name: workoutdata
+              mountPath: /tmp/datasource/data
           env:
             - name: AWS_SERVER_PUBLIC_KEY
               value: AKIA2INRU7C6G3IZHXAL
@@ -33,9 +36,6 @@ spec:
                 secretKeyRef:
                   name: aws.server.secret.key
                   key: AWS_SERVER_SECRET_KEY
-          volumeMounts:
-            - name: workoutdata
-              mountPath: /data
       volumes:
         - name: workoutdata
           emptyDir: {}
