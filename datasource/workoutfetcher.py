@@ -1,6 +1,7 @@
 import boto3
 import botocore
 import os
+import time
 
 Bucket = "gym-hero-data"
 Key = "gym-hero-export.csv"
@@ -22,10 +23,14 @@ if AWS_SERVER_PUBLIC_KEY is not None and AWS_SERVER_SECRET_KEY is not None:
 else:
     s3 = boto3.resource('s3')
 
-try:
-    s3.Bucket(Bucket).download_file(Key, outPutName)
-except botocore.exceptions.ClientError as e:
-    if e.response['Error']['Code'] == "404":
-        print("The object does not exist.")
-    else:
-        raise
+while True:
+
+    try:
+        s3.Bucket(Bucket).download_file(Key, outPutName)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            print("The object does not exist.")
+        else:
+            raise
+
+    time.sleep(3600)
