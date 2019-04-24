@@ -4,7 +4,7 @@ metadata:
   name: controller-deployment
 spec:
   # Number of pods to create and manage
-  replicas: 2
+  replicas: 1
   # Allows deployment to get handle on created pods
   selector:
     matchLabels:
@@ -20,14 +20,22 @@ spec:
           image: mikemcgarry/gym-hero-controller
           volumeMounts:
             - name: workoutdata
-              mountpath: /data
+              mountPath: /data
           ports:
             - containerPort: 5000
         - name: datasource
           image: mikemcgarry/gym-hero-datasource
+          env:
+            - name: AWS_SERVER_PUBLIC_KEY
+              value: AKIA2INRU7C6G3IZHXAL
+            - name: AWS_SERVER_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws.server.secret.key
+                  key: AWS_SERVER_SECRET_KEY
           volumeMounts:
             - name: workoutdata
-              mountpath: /data
+              mountPath: /data
       volumes:
         - name: workoutdata
           emptyDir: {}
