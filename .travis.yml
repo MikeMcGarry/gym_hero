@@ -16,7 +16,7 @@ before_install:
   - gcloud auth activate-service-account --key-file gym-hero-results-eab8406ed535.json
   - gcloud config set project gym-hero-results
   - gcloud config set compute/zone europe-west2-a
-  - glcoud container clusters get-credentials gym-hero-cluster
+  - gcloud container clusters get-credentials gym-hero-cluster
   - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
   - docker build -t mikemcgarry/view-test -f ./view/Dockerfile.dev ./view
 
