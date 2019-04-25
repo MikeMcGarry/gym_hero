@@ -17,14 +17,14 @@ spec:
     spec:
       containers:
         - name: controller
-          image: mikemcgarry/gym-hero-controller:v0.13.0
+          image: mikemcgarry/gym-hero-controller
           volumeMounts:
             - name: workoutdata
               mountPath: /tmp/controller/python-flask-app/data
           ports:
             - containerPort: 5000
         - name: datasource
-          image: mikemcgarry/gym-hero-datasource:v0.14.0
+          image: mikemcgarry/gym-hero-datasource
           volumeMounts:
             - name: workoutdata
               mountPath: /tmp/datasource/data
