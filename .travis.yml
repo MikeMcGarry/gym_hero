@@ -1,6 +1,12 @@
 sudo: required
+
 services:
   - docker
+
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_fd808f087d32_key -iv $encrypted_fd808f087d32_iv -in gym-hero-results-eab8406ed535.json.enc -out gym-hero-results-eab8406ed535.json -d
