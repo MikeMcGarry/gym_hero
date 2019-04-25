@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: view-deployment
+spec:
+  # Number of pods to create and manage
+  replicas: 3
+  # Allows deployment to get handle on created pods
+  selector:
+    matchLabels:
+      component: web
+  # The pod configurationm same as in a Pod config file
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: view
+          image: mikemcgarry/gym-hero-view
+          ports:
+            - containerPort: 3000

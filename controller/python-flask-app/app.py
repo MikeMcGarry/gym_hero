@@ -40,7 +40,14 @@ one_rep_max_lookup = {
 }
 
 # Import the workout data
-gym_hero = pd.read_csv("./data/gym-hero-export.csv")
+while True:
+    try:
+        gym_hero = pd.read_csv("./data/gym-hero-export.csv")
+        break
+    except:
+        print ('File does not exist yet, waiting 30 secs before retrying')
+        time.sleep(30)
+
 
 # Split out the headers
 gym_hero_headers = gym_hero[np.isfinite(gym_hero['Workout duration'])]

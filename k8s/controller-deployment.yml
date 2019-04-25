@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller-deployment
+spec:
+  # Number of pods to create and manage
+  replicas: 1
+  # Allows deployment to get handle on created pods
+  selector:
+    matchLabels:
+      component: api
+  # The pod configurationm same as in a Pod config file
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      containers:
+        - name: controller
+          image: mikemcgarry/gym-hero-controller
+          volumeMounts:
+            - name: workoutdata
+              mountPath: /tmp/controller/python-flask-app/data
+          ports:
+            - containerPort: 5000
+        - name: datasource
+          image: mikemcgarry/gym-hero-datasource
+          volumeMounts:
+            - name: workoutdata
+              mountPath: /tmp/datasource/data
+          env:
+            - name: AWS_SERVER_PUBLIC_KEY
+              value: AKIA2INRU7C6G3IZHXAL
+            - name: AWS_SERVER_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws.server.secret.key
+                  key: AWS_SERVER_SECRET_KEY
+      volumes:
+        - name: workoutdata
+          emptyDir: {}

@@ -1,33 +1,30 @@
 sudo: required
+
 services:
   - docker
 
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+
 before_install:
+  - openssl aes-256-cbc -K $encrypted_fd808f087d32_key -iv $encrypted_fd808f087d32_iv -in gym-hero-results-eab8406ed535.json.enc -out gym-hero-results-eab8406ed535.json -d
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file gym-hero-results-eab8406ed535.json
+  - gcloud config set project gym-hero-results
+  - gcloud config set compute/zone europe-west2-a
+  - glcoud container clusters get-credentials gym-hero-cluster
+  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
   - docker build -t mikemcgarry/view-test -f ./view/Dockerfile.dev ./view
 
 script:
   - docker run mikemcgarry/view-test npm test -- --coverage
 
-after_success:
-  - docker build -t mikemcgarry/gym-hero-view ./view
-  - docker build -t mikemcgarry/gym-hero-controller ./controller
-  - docker build -t mikemcgarry/gym-hero-server ./server
-
-  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
-
-  - docker push mikemcgarry/gym-hero-view
-  - docker push mikemcgarry/gym-hero-controller
-  - docker push mikemcgarry/gym-hero-server
-
 deploy:
-  provider: elasticbeanstalk
-  region: eu-west-2
-  app: gym-hero
-  env: GymHero-env-1
-  bucket_name: elasticbeanstalk-eu-west-2-705284077756
-  bucket_path: gym-hero
+  provider: script
+  script: bash ./deploy.sh
   on:
     branch: master
-  access_key_id: $AWS_ACCESS_KEY_ID
-  secret_access_key:
-    secure: $AWS_ACCESS_KEY_SECRET
