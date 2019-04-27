@@ -4,7 +4,7 @@ metadata:
   name: view-deployment
 spec:
   # Number of pods to create and manage
-  replicas: 3
+  replicas: 1
   # Allows deployment to get handle on created pods
   selector:
     matchLabels:
