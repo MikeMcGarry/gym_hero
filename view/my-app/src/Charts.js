@@ -58,6 +58,7 @@ class Charts extends Component {
             <h1 className='BodyType'>Chest</h1>
             <Chart exercise="DB Bench" />
             <Chart exercise="Incline DB Bench" />
+            <Chart exercise="Incline Bench Press" />
             <Chart exercise="Bench Press" />
             <Chart exercise="Machine Fly" />
             <h1 className='BodyType'> Back</h1>
