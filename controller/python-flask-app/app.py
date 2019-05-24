@@ -6,6 +6,13 @@ from flask_cors import CORS
 import time
 import datetime
 
+'''
+The lookup table for generating the one rep max estimate, the key is the number
+of reps and the value is the percentage of the one rep maximum the weight at
+this number of reps is estimated to be.
+
+To get the one rep maximum from this value you divide the weight by it.
+'''
 one_rep_max_lookup = {
     1: 1,
     2: 0.97,
@@ -97,7 +104,17 @@ gym_hero_merged['Unit'] = gym_hero_merged['Unit'].apply(
 # Convert the date to datetime format
 gym_hero_merged['Date'] = pd.to_datetime(gym_hero_merged['Date'])
 
+
 def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
+    """
+    This function
+
+    param str exercise: The exercise to generate the one rep max estimates for
+    param dict one_rep_lookup: The lookup table to use to find one rep max estimates
+    param bool one_rep: A flag to specify whether or not to calculate one rep max estimates
+    return dict: The one rep max estimates 
+
+    """
 
     _exercise = gym_hero_merged.loc[
         gym_hero_merged['Exercise'] == exercise, :].copy(
