@@ -56,8 +56,9 @@ while True:
         time.sleep(30)
 
 
-# Split out the headers
+# Split out the headers, all header rows have a value for workout duration
 gym_hero_headers = gym_hero[np.isfinite(gym_hero['Workout duration'])]
+# Drop the non-header columns
 gym_hero_headers = gym_hero_headers.drop(
     columns=[
         'Exercise',
@@ -70,8 +71,9 @@ gym_hero_headers = gym_hero_headers.drop(
         ]
     )
 
-# Split out the exercise content
+# Split out the exercise content, all rows with set information have a reps value
 gym_hero_content = gym_hero[np.isfinite(gym_hero['Reps'])]
+# Drop the non-exercise content columns
 gym_hero_content = gym_hero_content.drop(
     columns=[
         'Date',
@@ -107,41 +109,56 @@ gym_hero_merged['Date'] = pd.to_datetime(gym_hero_merged['Date'])
 
 def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
     """
-    This function
+    This function takes an exercise and determines either the gross maximum
+    weight lifted or the estimated one rep maximum for each workout over time
 
-    param str exercise: The exercise to generate the one rep max estimates for
-    param dict one_rep_lookup: The lookup table to use to find one rep max estimates
-    param bool one_rep: A flag to specify whether or not to calculate one rep max estimates
-    return dict: The one rep max estimates 
-
+    param (str) exercise: The exercise to generate the one rep max estimates for
+    param (dict) one_rep_lookup: The lookup table to use to find one rep max estimates
+    param (bool) one_rep: A flag to specify whether or not to calculate one rep max estimates
+    return (dict): The one rep max estimates over time
     """
 
+    # Get all the rows associated with this exercise
     _exercise = gym_hero_merged.loc[
         gym_hero_merged['Exercise'] == exercise, :].copy(
             deep=True)
 
+    # The key to find the maximum gross weight lifted for each workout
     key = 'Weight'
 
+    # If the one rep flag is true use the estimated one rep maximum
     if one_rep:
+        # Caclculate the one rep max ratio for the given number of reps for each set
         _exercise['one_rep_max_ratio'] = _exercise['Reps'].apply(
             lambda x: one_rep_lookup[int(x)] if x in one_rep_lookup.keys() else 0)
+        # Divide the weight of each set by this ratio to get the estimated one rep max
         _exercise['one_rep_max'] = _exercise['Weight'].divide(
             _exercise['one_rep_max_ratio'])
+        # Set the key to find the maximum one rep maximum for each workout
         key = 'one_rep_max'
 
+    # Group the exercises by workout and take the max value of the key
     _exercise = _exercise.groupby(
         ['Exercise', 'Date']).agg(
             {key: 'max', 'Date': 'first', 'Workout #': 'first'})
 
+    # Find the maximum one rep maximum across all workouts, i.e. personal best
     max_one_rep_max = _exercise[key].max()
 
+    # Create a list of the dates in a format that can be easily consumed
     dates = list(_exercise['Date'].apply(lambda x: str(int(time.mktime(x.timetuple())))).values)
+    # Get the date of the first ever workout with this exercise
     min_date = str(min(dates))
+    # Get the date of the most recent workout with this exercise
     max_date = str(max(dates))
+    # Get the one rep max estimates to a list
     one_rep_max_estimates = list(_exercise[key].values)
+    # Get the workout numbers as a list
     workouts = list(_exercise['Workout #'].values)
+    # Create a list of key value pairs with the workout date and estimated one rep maximum
+    # This is to make it easier for charting in other applications
     chart = [{'workout': str(date), 'one_rep_max_estimate': str(round(weight,2))} for date, weight in zip(dates, one_rep_max_estimates)]
-
+    # Return a dictionary with all the values created above
     return (
         {'max_one_rep_max': max_one_rep_max,
          'min_date': min_date,
@@ -153,23 +170,44 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
      )
 
 def volume(workout_type):
+    """
+    This function takes a workout name and returns the total volume for that
+    workout type over time
+
+    param (str) workout_type: The name of the workout
+    return (dict): The volume figures over time
+    """
+
+    # Filter out all exercises that aren't recorded in kilograms
     gym_hero_merged_weighted = gym_hero_merged.loc[gym_hero_merged['Unit'] == 'kg']
+    # Select all workouts which match the given workout type
     gym_hero_merged_weighted = gym_hero_merged.loc[gym_hero_merged['Workout'] == workout_type]
+    # Make a copy
     gym_hero_merged_weighted_copy = gym_hero_merged_weighted.copy(deep=True)
+    # Get a volume figure for each set of each exercise
     gym_hero_merged_weighted['volume'] = gym_hero_merged_weighted_copy.loc[:, 'Reps'].multiply(
         gym_hero_merged_weighted_copy.loc[:, 'Weight'], axis=0)
+    # Sum the volume figures for each workout
     gym_hero_merged_weighted_sum = gym_hero_merged_weighted.groupby('Workout #').agg({
         'Workout': 'first',
         'volume': 'sum',
         'Date':'first',
         'Workout duration':'first'})
 
+    # Create a list of the dates in a format that can be easily consumed
     dates = list(gym_hero_merged_weighted_sum['Date'].apply(lambda x: str(int(time.mktime(x.timetuple())))).values)
+    # Create a list of the volume figures
     volume = list(gym_hero_merged_weighted_sum['volume'].values)
+    # Get the date of the first ever workout of this type
     min_date = str(min(dates))
+    # Get the date of the most recent workout of this type
     max_date = str(max(dates))
+    # Get the maximum volume across all workouts of this type
     max_volume = gym_hero_merged_weighted_sum['volume'].max()
+    # Create a list of key value pairs with the workout date and the volume
+    # This is to make it easier for charting in other applications
     chart = [{'workout': str(date), 'volume': str(round(volume,2))} for date, volume in zip(dates, volume)]
+    # Return a dictionary with all the values created above
     return (
         {'max_volume': max_volume,
          'min_date': min_date,
@@ -180,16 +218,30 @@ def volume(workout_type):
          }
     )
 
-
+# Create a new Flask app
 app = Flask(__name__)
+# Turn CORS on
 CORS(app)
 
+# POST request method for getting one rep max estimates
 @app.route("/one-rep-max-estimates", methods=['POST'])
 def POST_one_rep_max_estimates():
+    """
+    This function gets the exercise from a POST request and returns the
+    one rep max estimates over time
+
+    return (dict): The one rep max estimates over time
+    """
     exercise = request.form.get('exercise')
     return (jsonify(timeline_max(exercise, one_rep=True)), 200)
 
 @app.route("/volume", methods=['POST'])
 def GET_volume():
+    """
+    This function gets the workout type from a POST request and returns
+    the volume for this workout type over time
+
+    return (dict): The volume figures over time
+    """
     workout_type = request.form.get('workout_type')
     return (jsonify(volume(workout_type)), 200)
