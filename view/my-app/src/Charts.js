@@ -44,34 +44,25 @@ class Charts extends Component {
         return (
             <div className={'Charts'}>
             <h1 className='BodyType'>Legs</h1>
-            <Chart exercise="Goblet Squat" />
+            <Chart exercise="Goblet Squat Pause" />
             <Chart exercise="Stiff Leg Deadlift" />
             <Chart exercise="Leg Extension" />
-            <Chart exercise="Deadlifts" />
-            <Chart exercise="Squat" />
-            <Chart exercise="Leg Press" />
             <h1 className='BodyType'>Shoulders</h1>
-            <Chart exercise="DB Shoulder Press" />
+            <Chart exercise="Upright Barbell Rows" />
             <Chart exercise="Military Press" />
             <Chart exercise="Standing Side Lateral Raise" />
-            <Chart exercise="Rear Machine Fly" />
+            <Chart exercise="Standing Pronated DB Front Raise" />
             <h1 className='BodyType'>Chest</h1>
-            <Chart exercise="DB Bench" />
             <Chart exercise="Incline DB Bench" />
-            <Chart exercise="Incline Bench Press" />
             <Chart exercise="Bench Press" />
             <Chart exercise="Machine Fly" />
             <h1 className='BodyType'> Back</h1>
-            <Chart exercise="T-Bar Rows" />
             <Chart exercise="BB Row" />
-            <Chart exercise="Wide Grip Lat Pulldown (Machine Kings Cross London)" />
             <Chart exercise="Bent Over DB Row" />
-            <Chart exercise="BB Row (Underhand)" />
+            <Chart exercise="Close Grip Lat Pulldown" />
             <h1 className='BodyType'>Arms</h1>
-            <Chart exercise="Barbell Curl (21s)" />
-            <Chart exercise="Barbell Curl" />
-            <Chart exercise="Rope Pushdown" />
-            <Chart exercise="Standing DB Curl" />
+            <Chart exercise="Seated DB Curl" />
+            <Chart exercise="EZ Bar Curl" />
             <Chart exercise="Close Grip Bench" />
             </div>
         );
