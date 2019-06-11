@@ -148,7 +148,7 @@ def volume(workout_type):
     gym_hero_merged_weighted_sum = gym_hero_merged_weighted.groupby('Workout #').agg({
         'Workout': 'first',
         'volume': 'sum',
-        'Date':'first')
+        'Date':'first'})
 
     # Create a list of the dates in a format that can be easily consumed
     dates = list(gym_hero_merged_weighted_sum['Date'].values)
