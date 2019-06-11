@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import urllib.request
 import os
+import time
 
 def get_data(username, app_token):
     """
