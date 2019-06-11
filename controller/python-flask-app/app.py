@@ -47,64 +47,16 @@ one_rep_max_lookup = {
 }
 
 # Import the workout data
-while True:
-    try:
-        gym_hero = pd.read_csv("./data/gym-hero-export.csv")
-        break
-    except:
-        print ('File does not exist yet, waiting 30 secs before retrying')
-        time.sleep(30)
-
-
-# Split out the headers, all header rows have a value for workout duration
-gym_hero_headers = gym_hero[np.isfinite(gym_hero['Workout duration'])]
-# Drop the non-header columns
-gym_hero_headers = gym_hero_headers.drop(
-    columns=[
-        'Exercise',
-        'Set #',
-        'Reps',
-        'Weight',
-        'Unit',
-        'Muscle group',
-        'Workout'
-        ]
-    )
-
-# Split out the exercise content, all rows with set information have a reps value
-gym_hero_content = gym_hero[np.isfinite(gym_hero['Reps'])]
-# Drop the non-exercise content columns
-gym_hero_content = gym_hero_content.drop(
-    columns=[
-        'Date',
-        'Workout duration',
-        'Link',
-        'Workout note'
-        ]
-    )
-
-# Merge the two together
-gym_hero_merged = pd.merge(
-    gym_hero_content,
-    gym_hero_headers,
-    how='left',
-    left_on='Workout #',
-    right_on='Workout #'
-)
-
-# Fill in null values with 0 for weight
-gym_hero_merged['Weight'] = gym_hero_merged['Weight'].fillna(value=0)
-
-# Change anything with units of lb to kg
-gym_hero_merged['Unit'] = gym_hero_merged['Unit'].apply(
-    lambda x: 'kg' if x == 'lb' else x)
-
-# Change anything with units of - to sec
-gym_hero_merged['Unit'] = gym_hero_merged['Unit'].apply(
-    lambda x: 'sec' if x == '-' else x)
-
-# Convert the date to datetime format
-gym_hero_merged['Date'] = pd.to_datetime(gym_hero_merged['Date'])
+def import_data():
+    while True:
+        try:
+            # Read the data
+            gym_hero = pd.read_csv("./data/gym-hero-export.csv")
+            break
+        except:
+            # Wait 30 seconds and print an update if it can't be found
+            print ('File does not exist yet, waiting 5 secs before retrying')
+            time.sleep(5)
 
 
 def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
@@ -117,6 +69,7 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
     param (bool) one_rep: A flag to specify whether or not to calculate one rep max estimates
     return (dict): The one rep max estimates over time
     """
+    gym_hero_merged = import_data()
 
     # Get all the rows associated with this exercise
     _exercise = gym_hero_merged.loc[
@@ -145,12 +98,14 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
     # Find the maximum one rep maximum across all workouts, i.e. personal best
     max_one_rep_max = _exercise[key].max()
 
-    # Create a list of the dates in a format that can be easily consumed
-    dates = list(_exercise['Date'].apply(lambda x: str(int(time.mktime(x.timetuple())))).values)
+    # Get the dates
+    dates = list(_exercise['Date'].values)
     # Get the date of the first ever workout with this exercise
     min_date = str(min(dates))
     # Get the date of the most recent workout with this exercise
     max_date = str(max(dates))
+    # Convert the dates to strings
+    dates = [str(date) for date in dates]
     # Get the one rep max estimates to a list
     one_rep_max_estimates = list(_exercise[key].values)
     # Get the workout numbers as a list
@@ -178,6 +133,8 @@ def volume(workout_type):
     return (dict): The volume figures over time
     """
 
+    gym_hero_merged = import_data()
+
     # Filter out all exercises that aren't recorded in kilograms
     gym_hero_merged_weighted = gym_hero_merged.loc[gym_hero_merged['Unit'] == 'kg']
     # Select all workouts which match the given workout type
@@ -191,17 +148,18 @@ def volume(workout_type):
     gym_hero_merged_weighted_sum = gym_hero_merged_weighted.groupby('Workout #').agg({
         'Workout': 'first',
         'volume': 'sum',
-        'Date':'first',
-        'Workout duration':'first'})
+        'Date':'first')
 
     # Create a list of the dates in a format that can be easily consumed
-    dates = list(gym_hero_merged_weighted_sum['Date'].apply(lambda x: str(int(time.mktime(x.timetuple())))).values)
+    dates = list(gym_hero_merged_weighted_sum['Date'].values)
     # Create a list of the volume figures
     volume = list(gym_hero_merged_weighted_sum['volume'].values)
     # Get the date of the first ever workout of this type
     min_date = str(min(dates))
     # Get the date of the most recent workout of this type
     max_date = str(max(dates))
+    # Convert the dates to strings
+    dates = [str(date) for date in dates]
     # Get the maximum volume across all workouts of this type
     max_volume = gym_hero_merged_weighted_sum['volume'].max()
     # Create a list of key value pairs with the workout date and the volume

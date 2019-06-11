@@ -29,13 +29,13 @@ spec:
             - name: workoutdata
               mountPath: /tmp/datasource/data
           env:
-            - name: AWS_SERVER_PUBLIC_KEY
-              value: AKIA2INRU7C6G3IZHXAL
-            - name: AWS_SERVER_SECRET_KEY
+            - name: GYM_HERO_USERNAME
+              value: mikejmcgarry
+            - name: GYM_HERO_APP_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: aws.server.secret.key
-                  key: AWS_SERVER_SECRET_KEY
+                  name: gymhero.tokens
+                  key: APP_TOKEN
       volumes:
         - name: workoutdata
           emptyDir: {}
