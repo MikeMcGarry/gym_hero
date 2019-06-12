@@ -99,7 +99,6 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
 
     # Find the maximum one rep maximum across all workouts, i.e. personal best
     max_one_rep_max = _exercise[key].max()
-
     # Get the dates
     dates = list(_exercise['Date'].values)
     # Get the date of the first ever workout with this exercise
@@ -151,6 +150,8 @@ def volume(workout_type):
         'Workout': 'first',
         'volume': 'sum',
         'Date':'first'})
+
+    gym_hero_merged_weighted_sum.sort_values('Date', ascending=True, inplace=True)
 
     # Create a list of the dates in a format that can be easily consumed
     dates = list(gym_hero_merged_weighted_sum['Date'].values)
