@@ -16,14 +16,19 @@ def get_data(username, app_token):
     """
 
     # Get the workout data from the GymHero api
-    response = urllib.request.urlopen(
-        "https://api.fitty.co/users/{}/workouts?app_token={}".format(
-            username, app_token
-        )).read()
-    # Convert it to json
-    workout_data = json.loads(response.decode('utf-8'))
+    while True:
+        try:
+            response = urllib.request.urlopen(
+                "https://api.fitty.co/users/{}/workouts?app_token={}".format(
+                    username, app_token
+                )).read()
+            # Convert it to json
+            workout_data = json.loads(response.decode('utf-8'))
 
-    return workout_data
+            return workout_data
+
+        except:
+            time.sleep(30)
 
 def process_data(workout_data):
     """
@@ -120,6 +125,7 @@ def save_data(workouts_df, file_path):
     """
 
     workouts_df.to_csv(file_path)
+    print ('Saved workout data to {}'.format(file_path))
 
 
 while True:
