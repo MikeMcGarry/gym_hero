@@ -139,7 +139,7 @@ def volume(workout_type):
     # Filter out all exercises that aren't recorded in kilograms
     gym_hero_merged_weighted = gym_hero_merged.loc[gym_hero_merged['Unit'] == 'kg']
     # Select all workouts which match the given workout type
-    gym_hero_merged_weighted = gym_hero_merged.loc[gym_hero_merged['Workout'] == workout_type]
+    gym_hero_merged_weighted = gym_hero_merged_weighted.loc[gym_hero_merged['Workout'] == workout_type]
     # Make a copy
     gym_hero_merged_weighted_copy = gym_hero_merged_weighted.copy(deep=True)
     # Get a volume figure for each set of each exercise
