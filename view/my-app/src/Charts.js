@@ -82,6 +82,7 @@ class Chart extends Component{
       one_rep_max_estimates: [],
       chart: [],
       workouts: [],
+      most_recent_workout_max: '',
       exercise: this.props.exercise
     };
 
@@ -105,6 +106,7 @@ class Chart extends Component{
       max_one_rep_max: values.data.max_one_rep_max,
       min_date: values.data.min_date,
       one_rep_max_estimates: values.data.one_rep_max_estimates,
+      most_recent_workout_max: values.data.one_rep_max_estimates.slice(-1)[0]
       chart: values.data.chart});
   }
 
@@ -146,7 +148,7 @@ class Chart extends Component{
         <ReferenceLine y={this.state.max_one_rep_max} stroke="red" strokeDasharray="3 3"/>
         <ReferenceDot
           x={Number(this.state.max_date)}
-          //y={this.state.one_rep_max_estimates.slice(-1)[0]}
+          y={this.state.most_recent_workout_max}
           r={3}
           fill="red"
           stroke="none" />

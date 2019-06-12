@@ -6,7 +6,7 @@ import Charts from './Charts';
 import Volumes from './Volumes';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<div><Charts /><Volumes /></div>, document.getElementById('root'));
+ReactDOM.render(<div><Charts /></div>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

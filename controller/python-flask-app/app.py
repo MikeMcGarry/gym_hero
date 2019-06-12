@@ -83,7 +83,9 @@ def timeline_max(exercise, one_rep_lookup=one_rep_max_lookup, one_rep=False):
     if one_rep:
         # Caclculate the one rep max ratio for the given number of reps for each set
         _exercise['one_rep_max_ratio'] = _exercise['Reps'].apply(
-            lambda x: one_rep_lookup[int(x)] if x in one_rep_lookup.keys() else 0)
+            lambda x: one_rep_lookup[int(x)] if x in one_rep_lookup.keys() else np.NaN)
+        # Drop rows with rep values outside the range of the lookup table
+        _exercise = _exercise.dropna(axis=0)
         # Divide the weight of each set by this ratio to get the estimated one rep max
         _exercise['one_rep_max'] = _exercise['Weight'].divide(
             _exercise['one_rep_max_ratio'])
