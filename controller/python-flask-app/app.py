@@ -53,7 +53,6 @@ def import_data():
             # Read the data
             gym_hero = pd.read_csv("./data/gym-hero-export.csv")
             return gym_hero
-            break
         except:
             # Wait 30 seconds and print an update if it can't be found
             print ('File does not exist yet, waiting 5 secs before retrying')

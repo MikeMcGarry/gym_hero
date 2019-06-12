@@ -146,7 +146,7 @@ class Chart extends Component{
         <ReferenceLine y={this.state.max_one_rep_max} stroke="red" strokeDasharray="3 3"/>
         <ReferenceDot
           x={Number(this.state.max_date)}
-          y={this.state.one_rep_max_estimates.slice(-1)[0]}
+          //y={this.state.one_rep_max_estimates.slice(-1)[0]}
           r={3}
           fill="red"
           stroke="none" />
