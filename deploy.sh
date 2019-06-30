@@ -11,6 +11,6 @@ docker push mikemcgarry/gym-hero-datasource:$SHA
 
 kubectl apply -n gym-hero -f k8s
 
-kubectl set image deployment/controller-deployment controller=mikemcgarry/gym-hero-controller:$SHA
-kubectl set image deployment/controller-deployment datasource=mikemcgarry/gym-hero-datasource:$SHA
-kubectl set image deployment/view-deployment view=mikemcgarry/gym-hero-view:$SHA
+kubectl set image -n gym-hero deployment/controller-deployment controller=mikemcgarry/gym-hero-controller:$SHA
+kubectl set image -n gym-hero deployment/controller-deployment datasource=mikemcgarry/gym-hero-datasource:$SHA
+kubectl set image -n gym-hero deployment/view-deployment view=mikemcgarry/gym-hero-view:$SHA
