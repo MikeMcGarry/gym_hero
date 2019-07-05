@@ -12,7 +12,8 @@ import {
   ReferenceLine,
   Scatter,
   ScatterChart,
-  ReferenceDot
+  ReferenceDot,
+  ResponsiveContainer
 } from 'recharts';
 import moment from 'moment';
 
@@ -91,6 +92,7 @@ class Volume extends Component{
     return (
       <div className={'Exercises'}>
       <h2 align="center">{this.state.workout}</h2>
+      <ResponsiveContainer width="90%" aspect={2.4}>
       <ScatterChart
         width={1400}
         height={600}
@@ -129,6 +131,7 @@ class Volume extends Component{
           fill="red"
           stroke="none" />
       </ScatterChart>
+      </ResponsiveContainer>
       </div>
     );
   };
