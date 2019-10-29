@@ -54,14 +54,17 @@ class Charts extends Component {
             <Chart exercise="Standing Side Lateral Raise" />
             <Chart exercise="Standing Pronated DB Front Raise" />
             <h1 className='BodyType'>Chest</h1>
+            <Chart exercise="DB Bench" />
             <Chart exercise="Incline DB Bench" />
             <Chart exercise="Bench Press" />
             <Chart exercise="Machine Fly" />
+            <Chart exercise="DB Fly" />
             <h1 className='BodyType'> Back</h1>
             <Chart exercise="BB Row" />
             <Chart exercise="Bent Over DB Row" />
             <Chart exercise="Close Grip Lat Pulldown" />
             <h1 className='BodyType'>Arms</h1>
+            <Chart exercise="EZ Bar Curl (7s)" />
             <Chart exercise="Seated DB Curl" />
             <Chart exercise="EZ Bar Curl" />
             <Chart exercise="Close Grip Bench" />
