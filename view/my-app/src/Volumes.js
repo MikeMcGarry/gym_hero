@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
-import querystring from 'query-string';
+import queryString from 'query-string';
 import {
   LineChart,
   Line,
@@ -71,11 +71,11 @@ class Volume extends Component{
   };
 
   componentDidMount() {
-    this.fetchValues();
+    this.fetchValues().catch(err => null);
   }
 
   async fetchValues() {
-    const values = await axios.post('/api/volume', querystring.stringify({
+    const values = await axios.post('/api/volume', queryString.stringify({
       workout_type: this.state.workout
     }));
     this.setState({
