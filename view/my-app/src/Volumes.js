@@ -71,7 +71,7 @@ class Volume extends Component{
   };
 
   componentDidMount() {
-    this.fetchValues().catch(err => null);
+    this.fetchValues().catch(err => {return null});
   }
 
   async fetchValues() {
