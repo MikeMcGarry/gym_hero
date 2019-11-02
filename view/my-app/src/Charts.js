@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
-import querystring from 'query-string';
+import queryString from 'query-string';
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -71,7 +69,7 @@ class Charts extends Component {
             </div>
         );
     };
-};
+}
 
 // This component is for each chart
 class Chart extends Component{
@@ -94,13 +92,13 @@ class Chart extends Component{
 
   // Mount function to fetch exercise details from the API
   componentDidMount() {
-    this.fetchValues();
+    this.fetchValues().catch(err => null);
   }
 
   // This calls the API to get the exercise details
   async fetchValues() {
     // Async request to get the exercise details
-    const values = await axios.post('/api/one-rep-max-estimates', querystring.stringify({
+    const values = await axios.post('/api/one-rep-max-estimates', queryString.stringify({
       exercise: this.state.exercise
     }));
     // Set the state from the results from the API
