@@ -92,7 +92,7 @@ class Chart extends Component{
 
   // Mount function to fetch exercise details from the API
   componentDidMount() {
-    this.fetchValues().catch(err => null);
+    this.fetchValues().catch(err => {return null});
   }
 
   // This calls the API to get the exercise details
