@@ -11,10 +11,3 @@ spec:
   dnsNames:
     - gym-progress.com
     - www.gym-progress.com
-  acme:
-    config:
-      - http01:
-          ingressClass: nginx
-        domains:
-          - gym-progress.com
-          - www.gym-progress.com
