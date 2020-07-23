@@ -43,29 +43,34 @@ class Charts extends Component {
         return (
             <div className={'Charts'}>
             <h1 className='BodyType'>Legs</h1>
-            <Chart exercise="Goblet Squat Pause" />
-            <Chart exercise="Stiff Leg Deadlift" />
-            <Chart exercise="Leg Extension" />
+                <Chart exercise="Goblet Squat Pause" />
+                <Chart exercise="Stiff Leg Deadlift" />
+                <Chart exercise="Leg Extension" />
+                <Chart exercise="Squat" />
+                <Chart exercise="Front Squat" />
             <h1 className='BodyType'>Shoulders</h1>
-            <Chart exercise="Upright Barbell Rows" />
-            <Chart exercise="Military Press" />
-            <Chart exercise="Standing Side Lateral Raise" />
-            <Chart exercise="Standing Pronated DB Front Raise" />
+                <Chart exercise="DB Shoulder Press" />
+                <Chart exercise="Upright Barbell Rows" />
+                <Chart exercise="Military Press" />
+                <Chart exercise="Standing Side Lateral Raise" />
+                <Chart exercise="Standing Pronated DB Front Raise" />
             <h1 className='BodyType'>Chest</h1>
-            <Chart exercise="DB Bench" />
-            <Chart exercise="Incline DB Bench" />
-            <Chart exercise="Bench Press" />
-            <Chart exercise="Machine Fly" />
-            <Chart exercise="DB Fly" />
+                <Chart exercise="DB Bench" />
+                <Chart exercise="Incline DB Bench" />
+                <Chart exercise="Bench Press" />
+                <Chart exercise="Incline Bench Press" />
+                <Chart exercise="Machine Fly" />
+                <Chart exercise="DB Fly" />
             <h1 className='BodyType'> Back</h1>
-            <Chart exercise="BB Row" />
-            <Chart exercise="Bent Over DB Row" />
-            <Chart exercise="Close Grip Lat Pulldown" />
+                <Chart exercise="BB Row" />
+                <Chart exercise="Bent Over DB Row" />
+                <Chart exercise="Close Grip Lat Pulldown" />
+                <Chart exercise="Deadlifts" />
             <h1 className='BodyType'>Arms</h1>
-            <Chart exercise="EZ Bar Curl (7s)" />
-            <Chart exercise="Seated DB Curl" />
-            <Chart exercise="EZ Bar Curl" />
-            <Chart exercise="Close Grip Bench" />
+                <Chart exercise="EZ Bar Curl (7s)" />
+                <Chart exercise="Seated DB Curl" />
+                <Chart exercise="EZ Bar Curl" />
+                <Chart exercise="Close Grip Bench" />
             </div>
         );
     };
